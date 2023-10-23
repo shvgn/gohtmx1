@@ -1,0 +1,53 @@
+package main
+
+templ Code(code string) {
+	<div class={ "font-mono text-2xl tracking-widest text-center" } id="code">{ code }</div>
+}
+
+templ GetButton() {
+	<button
+ 		class={ "btn btn-sm mx-4 w-32" }
+ 		hx-get="/fragments/code"
+ 		hx-swap="outerHTML"
+ 		hx-target="#code"
+	>
+		Get current
+	</button>
+}
+
+// TODO conditional primary clas
+// TODO deduplicate the class set
+
+templ GenerateButton() {
+	<button
+ 		class={ "btn btn-sm btn-primary mx-4 w-32" }
+ 		hx-post="/fragments/generate"
+ 		hx-swap="outerHTML"
+ 		hx-target="#code"
+	>
+		Generate
+	</button>
+}
+
+templ page(code string ) {
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		</head>
+		<body class={ "grid h-screen place-items-center" }>
+			<div>
+				<div class="p-4">
+					@Code(code)
+				</div>
+				<div class="p-4">
+					@GenerateButton()
+					@GetButton()
+				</div>
+			</div>
+		</body>
+		<link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css"/>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+	</html>
+}

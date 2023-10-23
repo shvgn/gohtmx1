@@ -17,10 +17,11 @@ ifndef OS
 endif
 
 .PHONY: all
-all: deps fmt build test
+all: deps generate fmt build test
 
 .PHONY: deps
 deps:
+	go install github.com/a-h/templ/cmd/templ@v0.2.408
 	go mod tidy
 	@test -f $(GOFUMPT_BIN)      || curl -sLo $(GOFUMPT_BIN) https://github.com/mvdan/gofumpt/releases/download/v$(GOFUMPT_VERSION)/gofumpt_v$(GOFUMPT_VERSION)_$(OS)_$(GOARCH)
 	@test -f $(GOLANGCILINT_BIN) || curl -sfL https://github.com/golangci/golangci-lint/releases/download/v$(GOLANGCI_LINT_VERSION)/golangci-lint-$(GOLANGCI_LINT_VERSION)-$(OS)-$(GOARCH).tar.gz | tar -xzOf - golangci-lint-$(GOLANGCI_LINT_VERSION)-$(OS)-$(GOARCH)/golangci-lint > $(GOLANGCILINT_BIN)
@@ -46,7 +47,7 @@ test:
 
 .PHONY: generate
 generate:
-	templ generate
+	$$GOPATH/bin/templ generate
 	mkdir -p ./static
 	bun x tailwindcss -o ./static/index.css --minify
 	bun build --minify ./index.ts --outfile=./static/index.js

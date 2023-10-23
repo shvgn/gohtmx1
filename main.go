@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"embed"
-	"fmt"
-	"io/fs"
 	"strings"
 	"sync"
 	"time"
@@ -42,13 +40,6 @@ func (s *wordgen) get() string {
 }
 
 func main() {
-
-	fmt.Println("known files: ")
-	fs.WalkDir(static, ".", func(path string, d fs.DirEntry, err error) error {
-		fmt.Println(path)
-		return nil
-	})
-
 	state := newWordGen()
 	go func() {
 		for {
@@ -60,21 +51,18 @@ func main() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		component := page(state.get())
-		component.Render(context.Background(), c.Response())
-		return nil
+		return component.Render(context.Background(), c.Response())
 	})
 
 	e.GET("/fragments/code", func(c echo.Context) error {
 		component := Code(state.get())
-		component.Render(context.Background(), c.Response())
-		return nil
+		return component.Render(context.Background(), c.Response())
 	})
 
 	e.POST("/fragments/generate", func(c echo.Context) error {
 		state.generate()
 		component := Code(state.get())
-		component.Render(context.Background(), c.Response())
-		return nil
+		return component.Render(context.Background(), c.Response())
 	})
 
 	e.StaticFS("static", echo.MustSubFS(static, "static"))

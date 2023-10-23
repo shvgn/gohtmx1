@@ -178,7 +178,7 @@ dist
 *_templ.go
 
 # Assets
-./static
+static/
 
 # The build target
-./app
+app

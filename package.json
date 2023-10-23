@@ -1,0 +1,10 @@
+{
+  "name": "go-templ",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "daisyui": "^3.9.3",
+    "htmx.org": "^1.9.6",
+    "tailwind": "^4.0.0"
+  }
+}

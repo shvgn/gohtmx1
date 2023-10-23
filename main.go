@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"embed"
+	"fmt"
+	"io/fs"
 	"strings"
 	"sync"
 	"time"
@@ -9,6 +12,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"k8s.io/apimachinery/pkg/util/rand"
 )
+
+//go:embed static
+var static embed.FS
 
 func newWordGen() *wordgen {
 	g := &wordgen{}
@@ -37,6 +43,12 @@ func (s *wordgen) get() string {
 
 func main() {
 
+	fmt.Println("known files: ")
+	fs.WalkDir(static, ".", func(path string, d fs.DirEntry, err error) error {
+		fmt.Println(path)
+		return nil
+	})
+
 	state := newWordGen()
 	go func() {
 		for {
@@ -64,5 +76,7 @@ func main() {
 		component.Render(context.Background(), c.Response())
 		return nil
 	})
+
+	e.StaticFS("static", echo.MustSubFS(static, "static"))
 	e.Logger.Fatal(e.Start(":3000"))
 }

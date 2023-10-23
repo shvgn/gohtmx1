@@ -65,5 +65,6 @@ ci: deps lint
 
 .PHONY: clean
 clean:
-	rm -rf ./static/*
+	rm app
 	rm -rf *_templ.go
+	rm -rf ./static/*

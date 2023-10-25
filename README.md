@@ -1,15 +1,20 @@
-# go-templ
+# gohtmx1
 
-To install dependencies:
+This is a test of bundling [htmx](https://htmx.org) and [Templ](https://templ.guide) with (Tailwind
+and DaisyUI for CSS) into single binary written in Go.
 
-```bash
-bun install
+## Running
+
+After builing and running, open http://localhost:3000
+
+```shell
+$ make all
+$ ./app
 ```
 
-To run:
+## Dev dependencies
 
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.0.6. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+* go
+* bun
+* npm (browserlist)
+* make
